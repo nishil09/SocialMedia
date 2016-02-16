@@ -7,7 +7,7 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.*;
 @DynamoDBTable(tableName = "user")
 public class userdata {
     private String number;
-    private String fname;
+    private String name;
     private String lname;
     private String email;
 
@@ -20,28 +20,21 @@ public class userdata {
         this.number = number;
     }
 
-    @DynamoDBAttribute(attributeName = "fname")
-    public String getFname() {
-        return fname;
+    @DynamoDBAttribute(attributeName = "name")
+    public String getName() {
+        return name;
     }
 
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
-    @DynamoDBAttribute(attributeName = "lname")
-    public String getLname() {
-        return lname;
+    public void setName(String fname) {
+        this.name = fname;
     }
 
-    public void setLname(String lname) {
-        this.lname = lname;
-    }
     @DynamoDBAttribute(attributeName = "email")
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String ename) {
+    public void setEmail(String email) {
         this.email = email;
     }
 }

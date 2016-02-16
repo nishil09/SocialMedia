@@ -106,14 +106,7 @@ private Button check;
                          intent.putExtra("number",phoneNumber);
                          startActivity(intent);
 
-                         /*  AmazonDynamoDBClient ddbClient = new AmazonDynamoDBClient(credentialsProvider);
-                         DynamoDBMapper mapper = new DynamoDBMapper(ddbClient);
-                         userdata object = new userdata();
-                         object.setNumber(num);
-                         object.setFname("Nishil");
-                         object.setLname("Prajapati");
-                         object.setEmail("nishilmita@gmail.com");
-                         mapper.save(object); */
+
 
 
 

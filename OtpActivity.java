@@ -1,6 +1,7 @@
 package com.example.nishil09.socialmedia;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -70,27 +71,9 @@ public class OtpActivity extends AppCompatActivity {
                     if((Integer.parseInt(obj.getCode().toString()) - Integer.parseInt(otp)) == 0)
                     {
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // Your dialog code.
-                                AlertDialog alertDialog = new AlertDialog.Builder(OtpActivity.this).create();
-                                alertDialog.setTitle("Alert");
-                                alertDialog.setMessage("Code Mathced");
-                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                alertDialog.show();
-
-
-
-                        }
-                    }
-
-            );
+                        Intent intent = new Intent(OtpActivity.this,RegisterUser.class);
+                        intent.putExtra("number",getIntent().getStringExtra("number"));
+                        startActivity(intent);
 
 
                     }
