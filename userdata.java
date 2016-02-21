@@ -8,7 +8,6 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.*;
 public class userdata {
     private String number;
     private String name;
-    private String lname;
     private String email;
 
     @DynamoDBHashKey(attributeName = "number")
