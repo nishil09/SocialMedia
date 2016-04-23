@@ -89,7 +89,7 @@ public class RegisterUser extends AppCompatActivity {
                             mapper.save(obj);
 
                             progressDialog.dismiss();
-                            Intent intent = new Intent(RegisterUser.this,ContactActivity.class);
+                            Intent intent = new Intent(RegisterUser.this,TabActivity.class);
                             intent.putExtra("number",getIntent().getStringExtra("number"));
                             startActivity(intent);
 

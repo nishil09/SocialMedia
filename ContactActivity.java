@@ -1,5 +1,8 @@
 package com.example.nishil09.socialmedia;
 
+import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.Manifest;
@@ -40,6 +43,19 @@ public class ContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact2);
         showContacts();
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.i("Grant","Permission is granted");
+
+            } else {
+
+                Log.i("Grant","Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+            }
+        }
+
 
     }
 
@@ -126,15 +142,9 @@ public class ContactActivity extends AppCompatActivity {
                                         int position, long id) {
 
                     // ListView Clicked item index
-                    int itemPosition = position;
-
-                    // ListView Clicked item value
-                   String itemValue = (String) listView.getItemAtPosition(position);
-
-                    // Show Alert
-                    Toast.makeText(getApplicationContext(),
-                            "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
-                            .show();
+                    Intent intent = new Intent(ContactActivity.this,shareMedia.class);
+                    intent.putExtra("number",getIntent().getStringExtra("number"));
+                    startActivityForResult(intent, 1);
 
                 }
 

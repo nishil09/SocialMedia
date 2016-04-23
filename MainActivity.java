@@ -33,6 +33,8 @@ private Button check;
         setContentView(R.layout.activity_main);
         check = (Button) findViewById(R.id.button);
         check.setOnClickListener(listner);
+        database obj = new database(this);
+
     }
 
     @Override
