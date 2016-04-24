@@ -43,6 +43,7 @@ public class OneFragment extends Fragment{
     ArrayList<String> number = new ArrayList<String>();
     String[] arr;
     String[] arr2;
+    database object;
     ListView listView;
     ArrayAdapter<String> adapter;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
@@ -54,6 +55,7 @@ public class OneFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        object = new database(getActivity());
     }
 
     @Override
@@ -115,9 +117,11 @@ public class OneFragment extends Fragment{
                             }
                             else
                             {
-
-                                number.add(num);
-                                name.add(cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
+                                String s1 = num;
+                                String s2 = cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                                object.addDataToUser(s1,s2);
+                                number.add(s1);
+                                name.add(s2);
                             }
 
                         }

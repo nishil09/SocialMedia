@@ -8,11 +8,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
  * Created by nishil09 on 4/2/16.
  */
+
+
 public class database extends SQLiteOpenHelper {
 
     private static final String LOG = "DatabaseHelper";
@@ -27,6 +30,8 @@ public class database extends SQLiteOpenHelper {
     private static final String TABLE_USER = "User";
     private static final String TABLE_Chat = "Chat";
     private static final String TABLE_Sync = "Sync";
+    private static final String TABLE_Group = "groupgroup";
+    private static final String TABLE_Group_Chat = "GroupChat";
 
 
     // Common column names
@@ -39,16 +44,40 @@ public class database extends SQLiteOpenHelper {
     private static final String TimeStamp = "TimeStamp";
     private static final String DIRECTION = "Direction";
 
+
+    //Group Table Column
+    private static final String GroupName = "Name";
+    private static final String User1 = "Friend1";
+    private static final String User2 = "Friend2";
+    private static final String User3 = "Friend3";
+    private static final String User4 = "Friend4";
+    private static final String TimeStampGroup = "TimeStamp";
+
+    //Group Table Chat
+
+    private static final String GroupNameChat = "Name";
+    private static final String GroupChatMessage = "Path";
+    private static final String GroupMessageTimeStamp = "TimeStamp";
     // TAGS Table - column names
     private static final String LAST_SYNC = "Lastsync";
 
     // Table Create Statements
     // Todo table create statement
     private static final String CREATE_TABLE_TODO = "CREATE TABLE "
-            + TABLE_USER + " (" + USER_ID + " TEXT PRIMARY KEY," + USER_NAME
+            + TABLE_USER + " (" + USER_ID + " TEXT," + USER_NAME
             + " TEXT" + ")";
+//Create A Group
+    private static final String CREATE_TABLE_GROUP= "CREATE TABLE "
+            + TABLE_Group+ " (" + GroupName + " TEXT," + User1
+            + " TEXT," + User2 + " TEXT," + User3 +  " TEXT,"+ User4 +  " TEXT,"+ TimeStampGroup +  " TEXT" + ")";
 
+    // Create A group Chat
+
+    private static final String CREATE_TABLE_GroupChat = "CREATE TABLE "
+            + TABLE_Group_Chat + " (" + GroupNameChat + " TEXT," + GroupChatMessage
+            + " TEXT"  + GroupMessageTimeStamp +  " TEXT"+ ")";
     // Tag table create statement
+
     private static final String CREATE_TABLE_TAG = "CREATE TABLE " + TABLE_Chat
             + " (" + USER_CHAT_ID + " TEXT," + FILE_PATH + " TEXT," + TimeStamp + " TEXT,"
             + DIRECTION + " TEXT" + ")";
@@ -68,6 +97,9 @@ public class database extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_TODO);
         db.execSQL(CREATE_TABLE_TAG);
         db.execSQL(CREATE_TABLE_SYNC);
+        db.execSQL(CREATE_TABLE_GROUP);
+        db.execSQL(CREATE_TABLE_GroupChat);
+
        // int x = addDataToSync("0");
 
 
@@ -78,6 +110,9 @@ public class database extends SQLiteOpenHelper {
         // on upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_Chat);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_Sync);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_Group);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_Group_Chat);
         //db.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_TAG);
 
         // create new tables
@@ -106,6 +141,22 @@ public class database extends SQLiteOpenHelper {
         values.put("TimeStamp", Timestamp);
         values.put("Direction", Direction);
         db.insertOrThrow("Chat", null, values);
+
+        return 1;
+    }
+
+    int addDataToGroup(String Name,String[] f1,String timestamp)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("Name", Name);
+        values.put("Friend1", f1[0]);
+        values.put("Friend2", f1[1]);
+        values.put("Friend3", f1[2]);
+        values.put("Friend4", f1[3]);
+        values.put("TimeStamp", timestamp);
+        db.insertOrThrow("groupgroup", null, values);
 
         return 1;
     }
@@ -151,12 +202,10 @@ public class database extends SQLiteOpenHelper {
         }
         return new String[]{};
     }
-    HashMap<String,String> SelectDataFromUser() {
+    String[] SelectDataFromGroup() {
 
 
-
-        HashMap<String,String> map = new HashMap<String,String>();
-        String que = "SELECT Path from User";
+        String que = "SELECT Name from groupgroup ORDER BY TimeStamp ASC";
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -168,18 +217,53 @@ public class database extends SQLiteOpenHelper {
             cur.moveToFirst();
 
             while (i < cur.getCount()) {
-               map.put(cur.getString(0),cur.getString(1));
+                ar[i] = cur.getString(0);
                 Log.i("DATA", cur.getString(0));
                 cur.moveToNext();
                 i++;
             }
-            return map;
+            return ar;
         }
         catch(Exception e)
         {
             Log.i("Errorr",e.toString());
         }
-        return map;
+        return new String[]{};
+    }
+    helper SelectDataFromUser() {
+
+
+
+        helper obj = new helper();
+        obj.name = new HashSet<String>();
+        obj.number = new HashSet<String>();
+        HashMap<String,String> map = new HashMap<String,String>();
+        String que = "SELECT Number,Name from User";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cur = db.rawQuery(que, null);
+        Log.i("DATA", "" + cur.getCount());
+        try {
+            int i = 0;
+            String[] ar = new String[cur.getCount()];
+            cur.moveToFirst();
+
+            while (i < cur.getCount()) {
+                obj.number.add(cur.getString(0));
+                obj.name.add(cur.getString(1));
+
+                Log.i("DATA", cur.getString(0));
+                cur.moveToNext();
+                i++;
+            }
+            return obj;
+        }
+        catch(Exception e)
+        {
+            Log.i("Errorr",e.toString());
+        }
+        return obj;
     }
     String[] SelectDataFromSync() {
 

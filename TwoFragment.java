@@ -32,6 +32,7 @@ public class TwoFragment extends Fragment{
 
     ListView listView;
     private Button check;
+    database obj;
     public TwoFragment() {
         // Required empty public constructor
     }
@@ -39,6 +40,7 @@ public class TwoFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        obj = new database(getActivity());
 
     }
 
@@ -55,7 +57,7 @@ public class TwoFragment extends Fragment{
         check = (Button)  getActivity().findViewById(R.id.button);
         check.setOnClickListener(listner);
   listView =(ListView) getActivity().findViewById(R.id.groups);
-        String[] arr2 = {"Group1","Group2","Group3"};
+        String[] arr2 = obj.SelectDataFromGroup();
        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, arr2);
         listView.setAdapter(adapter);
